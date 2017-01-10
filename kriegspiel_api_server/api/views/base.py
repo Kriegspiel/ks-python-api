@@ -13,6 +13,7 @@ class ApiView(View):
 
 
 class AuthenticatedApiView(ApiView):
+    @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         user = getattr(request, 'user', None)
         if not user or not user.is_authenticated():

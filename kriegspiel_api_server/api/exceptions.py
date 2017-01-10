@@ -24,7 +24,7 @@ class AuthenticationError(ApiException):
     string_code = 'AUTHENTICATION_FAILED'
 
 
-class ValidationError(ApiException):
+class ApiValidationError(ApiException):
     http_code = 400
     string_code = 'VALIDATION_ERROR'
 
@@ -32,8 +32,13 @@ class ValidationError(ApiException):
         self.errors = errors_dict
 
     def to_dict(self):
-        d = super(ValidationError, self).to_dict()
+        d = super(ApiValidationError, self).to_dict()
         d.update({
             'errors': self.errors,
         })
         return d
+
+
+class UserNotFound(ApiException):
+    http_code = 403
+    string_code = 'USER_NOT_FOUND'

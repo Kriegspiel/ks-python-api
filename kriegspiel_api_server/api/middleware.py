@@ -25,18 +25,18 @@ class ApiMiddleware(object):
             return ApiResponse(exception.to_dict(), exception.http_code)
 
 
-def token_middleware(get_response):
-    """
+def token_authentication_middleware(get_response):
+    '''
     A middleware that checks authentication token and sets request.user instance
     if the token is valid.
-    """
+    '''
     def middleware(request):
-        if request.user is not None:
-            warnings.warn(_("request.user has been set before token_middleware"
-                            " and will be overriten. To disable this message"
-                            " remove AuthenticationMiddleware from middleware"
-                            "list."))
-        token_header = request.META.get(settings.TOKEN_HEADER)
+        if getattr(request, 'user', None) is not None and request.user.is_authenticated:
+            warnings.warn(_('request.user has been set before token_middleware'
+                            ' and will be overwritten. To disable this message'
+                            ' remove AuthenticationMiddleware from middleware'
+                            ' list.'))
+        token_header = request.META.get('HTTP_' + settings.TOKEN_HEADER, '')
         token_value = token_header.split(settings.TOKEN_PREFIX)[-1].strip()
         token = AuthToken.objects.filter(
             value=token_value, user_id__is_active=True).first()

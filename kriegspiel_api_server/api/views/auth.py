@@ -11,7 +11,7 @@ from api.models import AuthToken
 from django.db import connection
 
 
-class SignIn(ApiView):
+class SignInView(ApiView):
     def post(self, request):
         data = SignInSerializer().load_data(request.POST)
         user = get_user_model().objects.filter(email=data['email']).first()

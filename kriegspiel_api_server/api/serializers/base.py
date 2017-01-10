@@ -4,7 +4,7 @@ import warnings
 
 from marshmallow import Schema
 
-from api.exceptions import ValidationError
+from api.exceptions import ApiValidationError
 
 
 class Serializer(Schema):
@@ -22,5 +22,5 @@ class Serializer(Schema):
         """
         data, errors = self.load(data)
         if errors:
-            raise ValidationError(errors)
+            raise ApiValidationError(errors)
         return data

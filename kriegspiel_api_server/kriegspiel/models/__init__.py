@@ -2,5 +2,5 @@
 
 from .user import User
 from .game import Game
-from .turn import Turn
+from .move import Move
 

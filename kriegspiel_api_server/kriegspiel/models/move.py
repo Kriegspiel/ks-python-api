@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import enum
+import chess
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -16,7 +17,7 @@ def validate_chess_square(square):
         raise ValidationError(_('invalid column: {}'.format(square[1])))
 
 
-class Turn(models.Model):
+class Move(models.Model):
     player = models.ForeignKey('kriegspiel.User', related_name='+')
     game = models.ForeignKey('kriegspiel.Game')
     from_square = models.CharField(max_length=2,
@@ -25,8 +26,12 @@ class Turn(models.Model):
                                  validators=[validate_chess_square])
     result = models.IntegerField()
 
+    def as_python_chess_move(self):
+        uci = self.from_square + self.to_square
+        return chess.Move.from_uci(uci)
 
-class TurnResult(object):
+
+class MoveResult(object):
     INVALID = -1
     MOVED = 0
     PIECE_TAKEN = 1

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import chess
 from django.db import models
 from django.utils import timezone
+
+import kriegspiel.models
 
 
 class Game(models.Model):
@@ -12,3 +15,10 @@ class Game(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     rules = models.CharField(max_length=100, default='chess')
     name = models.CharField(max_length=200)
+
+    @property
+    def board(self):
+        board = chess.Board()
+        for move in self.move_set.order_by('created_at').all():
+            board.push(move.as_python_chess_move())
+        return board

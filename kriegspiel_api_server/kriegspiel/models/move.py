@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import enum
+import chess
 
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -16,17 +18,22 @@ def validate_chess_square(square):
         raise ValidationError(_('invalid column: {}'.format(square[1])))
 
 
-class Turn(models.Model):
+class Move(models.Model):
     player = models.ForeignKey('kriegspiel.User', related_name='+')
     game = models.ForeignKey('kriegspiel.Game')
+    created_at = models.DateTimeField(default=timezone.now)
     from_square = models.CharField(max_length=2,
                                    validators=[validate_chess_square])
     to_square = models.CharField(max_length=2,
                                  validators=[validate_chess_square])
     result = models.IntegerField()
 
+    def as_python_chess_move(self):
+        uci = self.from_square + self.to_square
+        return chess.Move.from_uci(uci)
 
-class TurnResult(object):
+
+class MoveResult(object):
     INVALID = -1
     MOVED = 0
     PIECE_TAKEN = 1

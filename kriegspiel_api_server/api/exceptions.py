@@ -42,3 +42,8 @@ class ApiValidationError(ApiException):
 class UserNotFound(ApiException):
     http_code = 403
     string_code = 'USER_NOT_FOUND'
+
+
+class NotFound(ApiException):
+    http_code = 404
+    string_code = 'NOT_FOUND'

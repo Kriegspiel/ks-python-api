@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import kriegspiel.models.turn
+import kriegspiel.models.move
 
 
 class Migration(migrations.Migration):
@@ -32,8 +32,8 @@ class Migration(migrations.Migration):
             name='Turn',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('from_square', models.CharField(max_length=2, validators=[kriegspiel.models.turn.validate_chess_square])),
-                ('to_square', models.CharField(max_length=2, validators=[kriegspiel.models.turn.validate_chess_square])),
+                ('from_square', models.CharField(max_length=2, validators=[kriegspiel.models.move.validate_chess_square])),
+                ('to_square', models.CharField(max_length=2, validators=[kriegspiel.models.move.validate_chess_square])),
                 ('result', models.IntegerField()),
                 ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='kriegspiel.Game')),
                 ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to=settings.AUTH_USER_MODEL)),

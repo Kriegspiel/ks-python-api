@@ -2,7 +2,8 @@
 
 import chess
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, cache
+from django.utils.functional import cached_property
 
 import kriegspiel.models
 
@@ -16,8 +17,9 @@ class Game(models.Model):
     rules = models.CharField(max_length=100, default='chess')
     name = models.CharField(max_length=200)
 
-    @property
+    @cached_property
     def board(self):
+        print('running query')
         board = chess.Board()
         for move in self.move_set.order_by('created_at').all():
             board.push(move.as_python_chess_move())

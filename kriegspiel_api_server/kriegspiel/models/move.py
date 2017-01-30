@@ -5,6 +5,7 @@ import chess
 
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -20,6 +21,7 @@ def validate_chess_square(square):
 class Move(models.Model):
     player = models.ForeignKey('kriegspiel.User', related_name='+')
     game = models.ForeignKey('kriegspiel.Game')
+    created_at = models.DateTimeField(default=timezone.now)
     from_square = models.CharField(max_length=2,
                                    validators=[validate_chess_square])
     to_square = models.CharField(max_length=2,

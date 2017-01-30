@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from django.db import transaction
+
 from api.views.base import AuthenticatedApiView, ApiView
 from api.response import ApiResponse
 from api.serializers.game import GameSerializer
-from api.kriegspiel_helpers import get_user_or_api_exception
+from api import exceptions
 
-from kriegspiel.models import Game
+from kriegspiel.models import Game, Move
 
 
 class GamesView(AuthenticatedApiView):
@@ -30,3 +32,11 @@ class GamesView(AuthenticatedApiView):
         output_serializer, errors = GameSerializer().dump(game)
         return ApiResponse(data=output_serializer)
 
+class TurnView(AuthenticatedApiView):
+
+    def post(self, request, game_id):
+        game = Game.objects.filter(id=game_id).first()
+        if game is None or request.user.id not in [game.white_id, game.black_id]:
+            raise exceptions.NotFound()
+        with transaction.atomic():
+            pass # todo: validate move, save it to db

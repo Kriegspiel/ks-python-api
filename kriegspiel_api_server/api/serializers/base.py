@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import warnings
-
 from marshmallow import Schema
 
 from api.exceptions import ApiValidationError

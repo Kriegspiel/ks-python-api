@@ -25,7 +25,7 @@ SECRET_KEY = '$em%z+bu@)$bz-)#vh+e%_7_3elnln%6u%na(!vcdy0zs$1_o4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'kriegspiel',
     'api',
+    'webui',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+import os
+STATIC_ROOT = os.path.abspath('static')
 
 AUTH_USER_MODEL = 'kriegspiel.User'
 

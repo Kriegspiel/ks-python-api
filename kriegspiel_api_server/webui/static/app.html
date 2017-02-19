@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css"
+        type="text/css">
+  <script src="http://cdn.webix.com/edge/webix.js"
+          type="text/javascript"></script>
+  <script src="js/sign_in.js" type="text/javascript"></script>
+</head>
+<body>
+<script>
+  function sign_in() {
+    form = $$('sign_in');
+    webix.ajax().post(
+      "/api/auth/sign_in/",
+      form.getValues(),
+      {success: sign_in_success_callback, error: sign_in_error_callback}
+    );
+  }
+</script>
+<script type="text/javascript" charset="utf-8">
+  webix.ui({
+    rows: [
+      {
+        view: "template",
+        type: "header", template: "My App!"
+      },
+      {
+        view: 'form',
+        id: 'sign_in',
+        elements: [
+          {view: 'text', name: 'email', placeholder: 'Email'},
+          {view: 'text', type: 'password', name: 'password', placeholder: 'Password'},
+          {view: 'button', value: 'Sign in', click: sign_in}
+        ]
+      }
+    ]
+  });
+</script>
+</body>
+</html>
